@@ -1,10 +1,7 @@
-
-using Microsoft.VisualBasic;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Data;
-using System.Diagnostics;
+using SwinGameSDK;
+/// <summary>
+/// Game logic is main program of the game
+/// </summary>
 static class GameLogic
 {
 	public static void Main()
@@ -13,20 +10,22 @@ static class GameLogic
 		SwinGame.OpenGraphicsWindow("Battle Ships", 800, 600);
 
 		//Load Resources
-		LoadResources();
+		GameResources.LoadResources();
 
-		SwinGame.PlayMusic(GameMusic("Background"));
+        //Play background music
+		SwinGame.PlayMusic(GameResources.GameMusic("Background"));
 
 		//Game Loop
 		do {
-			HandleUserInput();
-			DrawScreen();
-		} while (!(SwinGame.WindowCloseRequested() == true | CurrentState == GameState.Quitting));
+			GameController.HandleUserInput();
+            GameController.DrawScreen();
+		} while (!(SwinGame.WindowCloseRequested() == true | GameController.CurrentState == GameState.Quitting));
 
+        //Stop background music when exit
 		SwinGame.StopMusic();
 
-		//Free Resources and Close Audio, to end the program.
-		FreeResources();
+        //Free Resources and Close Audio, to end the program.
+        GameResources.FreeResources();
 	}
 }
 
